@@ -11,13 +11,16 @@
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "preinstall": "mkdir ./dist && command -v link-module-alias && link-module-alias clean || true",
-    "postinstall": "link-module-alias"
+    "postinstall": "link-module-alias",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "Wilson Anciro",
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.14",
     "@types/node": "^18.11.12",
+    "jest": "^29.3.1",
     "prisma": "^4.7.1",
     "reflect-metadata": "^0.1.13",
     "ts-node-dev": "^2.0.0",

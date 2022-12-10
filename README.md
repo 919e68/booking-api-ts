@@ -19,8 +19,12 @@ docker-compose build
 docker-compose up
 ```
 
-### Sample Post Data
+### GET Endpoint
+`GET /bookings`
 
+### POST Endpoint
+
+`POST /bookings`
 ```json
 {
   "serviceId": 1,
