@@ -20,11 +20,13 @@ docker-compose up
 ```
 
 ### GET Endpoint
+
 `GET /bookings`
 
 ### POST Endpoint
 
 `POST /bookings`
+
 ```json
 {
   "serviceId": 1,
