@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum RecurringType {
+  daily
+  weekday
+  weekly
+}
+
+model Service {
+  id                BigInt @id @default(autoincrement()) @db.BigInt
+  name              String @unique
+  duration          Int
+  maxSlot           Int @map("max_slot")
+  bufferTime        Int @map("buffer_time")
+  allowedFutureDays Int @map("allowed_future_days")
+
+  availabilities Availability[]
+  bookings       Booking[]
+  @@map("services")
+}
+
+model AvailabilityType {
+  id             BigInt @id @default(autoincrement()) @db.BigInt
+  name           String @unique
+  isAvailable    Boolean @default(false) @map("is_available")
+
+  availabilities Availability[]
+  @@map("availability_types")
+}
+
+model Availability {
+  id                  BigInt @id @default(autoincrement()) @db.BigInt
+  serviceId           BigInt @map("service_id")
+  availabilityTypeId  BigInt @map("availability_type_id")
+  isRecurring         Boolean @default(false) @map("is_recurring")
+  recurringType       RecurringType? @map("recurring_type")
+  startTime           DateTime @map("start_time")
+  endTime             DateTime @map("end_time")
+
+  service             Service @relation(fields: [serviceId], references: [id])
+  availabilityType    AvailabilityType @relation(fields: [availabilityTypeId], references: [id])
+  @@map("availabilities")
+}
+
+model Booking {
+  id         BigInt @id @default(autoincrement()) @db.BigInt
+  email      String
+  firstName  String @map("first_name")
+  lastName   String @map("last_name")
+  serviceId  BigInt @map("service_id")
+  startTime  DateTime @map("start_time")
+  endTime    DateTime @map("end_time")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  service    Service @relation(fields: [serviceId], references: [id])
+  @@map("bookings")
+}
